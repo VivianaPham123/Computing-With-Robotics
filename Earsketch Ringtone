@@ -1,0 +1,66 @@
+#		python code
+#		script_name: Ringtone
+#
+#		author: Viviana Pham
+#		description: Ringtone appealing to high school students (60~90 seconds long)
+#
+
+from earsketch import *
+
+init()
+setTempo(120)
+
+#variables
+sound1 = RD_WORLD_PERCUSSION_KALIMBA_PIANO_11
+sound2 = CIARA_SET_THEME_ATMOS_1
+sound3 = CIARA_SET_THEME_MELSYNTH
+bass = RD_WORLD_PERCUSSION_BASSWOODENTONE_1
+piano = RD_WORLD_PERCUSSION_KALIMBA_PIANO_7
+beat = "000++++++++++00-"
+end = 38
+startHalf = 15
+endHalf = 23
+
+#custom function
+def section1(startMeasure, endMeasure):
+    fitMedia(sound1, 1, startMeasure, endMeasure)
+    fitMedia(sound3, 2, startMeasure + 2, endMeasure)
+    fitMedia(bass, 3, startMeasure + 2, endMeasure)
+
+def transition(startMeasure, endMeasure):
+    fitMedia(sound3, 2, startMeasure, endMeasure)
+    fitMedia(bass, 3, startMeasure, endMeasure)
+
+def section2(startMeasure, endMeasure):
+    fitMedia(sound1, 1, startMeasure, endMeasure)
+    fitMedia(sound3, 2, startMeasure, endMeasure)
+    fitMedia(bass, 3, startMeasure, endMeasure)
+
+def ending(startMeasure, endMeasure):
+    fitMedia(bass, 3, startMeasure, endMeasure)
+    setEffect(3, VOLUME, GAIN, 0, startMeasure, -60, endMeasure)
+
+#loops (alternating beats)
+for i in range(1, startHalf - 4, 4):
+    fitMedia(sound2, 4, i + 4, i + 6)
+    setEffect(4, VOLUME, GAIN, -15)
+
+for i in range(endHalf - 2, end - 4, 4):
+    fitMedia(sound2, 4, i + 4, i + 6)
+    setEffect(4, VOLUME, GAIN, -15)
+
+#music
+section1(1, startHalf)
+
+for measure in range(1, end - 2):
+    makeBeat(piano, 5, measure + 2, beat)
+
+transition(startHalf, endHalf)
+section2(endHalf, end)
+ending(end, end + 1.25)
+
+#effects
+setEffect(2, VOLUME, GAIN, -20)
+
+
+finish()
